@@ -6,7 +6,13 @@ using UnityEngine;
 public class WeatherInfo
 {
     public main main;
-    public weather[] weather;
+    [SerializeField] private weather[] weather;
+
+    public weather Weather
+    {
+        get { return this.weather[0]; }
+        private set { }
+    }
 }
 
 [System.Serializable]
@@ -28,4 +34,5 @@ public class weather
     public string description;
     public string icon;
     public Sprite imageIcon;
+    public Texture2D imageTexture;
 }

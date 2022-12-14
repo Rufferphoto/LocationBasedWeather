@@ -18,7 +18,8 @@ Please star :star: the repository if you find it useful so others can find it.
 ## Tips
 
 ## Packages this uses.
-- Async threading (Unity)
+- HDRP. (Unity)
+- Visual Effect Graph (Unity)
 - Tmpro. (Unity)
 
 

@@ -15,28 +15,31 @@ public class GetLocation : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        GetIP();
+        StartCoroutine(GetIP());
     }
 
-    private async void GetIP()
+    private IEnumerator GetIP()
     {
         var www = new UnityWebRequest("https://ip.seeip.org/geoip")
         {
             downloadHandler = new DownloadHandlerBuffer()
         };
 
-        UnityWebRequest.Result result = await www.SendWebRequest();
-
-        if (www.isNetworkError || www.isHttpError)
+        yield return www.SendWebRequest();
+        
+        if (www.result == UnityWebRequest.Result.Success)
         {
-            return;
+            locationInfo = JsonUtility.FromJson<LocationInfo>(www.downloadHandler.text);
+            IPAddress = locationInfo.ip;
+            latitude = locationInfo.latitude;
+            longitude = locationInfo.longitude;
+            initialized = true;            
         }
-
-        locationInfo = JsonUtility.FromJson<LocationInfo>(www.downloadHandler.text);
-        IPAddress = locationInfo.ip;
-        latitude = locationInfo.latitude;
-        longitude = locationInfo.longitude;
-        initialized = true;
+        else
+        {
+            Debug.Log("Could not gather IP address.");
+            yield break;
+        }        
     }
 
     public bool AddressAcquired()
